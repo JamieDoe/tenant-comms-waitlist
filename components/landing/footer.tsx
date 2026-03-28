@@ -24,8 +24,8 @@ export function Footer() {
 
         <div className="flex items-center gap-1">
           {FOOTER_COPY.links.map((link) => (
-            <Button key={link.href} variant="link" size="sm" asChild>
-              <Link href={link.href} className="text-xs text-muted-foreground/70">
+            <Button key={link.href} variant="link" size="default" asChild>
+              <Link href={link.href} className="text-xs text-muted-foreground/70 min-h-[44px] px-3">
                 {link.label}
               </Link>
             </Button>
