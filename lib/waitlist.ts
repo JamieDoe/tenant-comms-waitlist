@@ -18,15 +18,15 @@ export interface WaitlistResult {
 
 /**
  * Submit an email to the waitlist.
- * Sends a confirmation notification to waitlist@tenantcomms.com via Resend.
+ * Sends a confirmation notification to the user's email via Resend.
  */
 export async function submitToWaitlist(
-  submission: WaitlistSubmission
+  submission: WaitlistSubmission,
 ): Promise<WaitlistResult> {
   try {
     const { error } = await resend.emails.send({
-      from: "TenantComms <waitlist@tenantcomms.com>",
-      to: ["waitlist@tenantcomms.com"],
+      from: "waitlist@tenantcomms.com",
+      to: submission.email,
       subject: `New waitlist signup: ${submission.email}`,
       react: WaitlistConfirmationEmail({
         email: submission.email,
