@@ -1,3 +1,5 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Poppins, Fira_Code } from "next/font/google";
 import "./globals.css";
@@ -39,12 +41,14 @@ export default function RootLayout({
         poppins.variable,
         poppinsHeading.variable,
         firaCode.variable,
-        "font-sans"
+        "font-sans",
       )}
     >
       <body className="min-h-full flex flex-col">
         {children}
         <Toaster richColors position="top-center" />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
