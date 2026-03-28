@@ -19,14 +19,13 @@ export function Compliance() {
       <div className="mx-auto max-w-[1120px]">
         {/* Mould cleanup image */}
         <FadeIn>
-          <div className="mb-12 overflow-hidden rounded-2xl">
+          <div className="relative mb-12 h-[250px] sm:h-[350px] lg:h-[400px] overflow-hidden rounded-2xl">
             <Image
               src="/assets/mould-cleanup.webp"
               alt="Professional mould remediation in a rental property — the kind of issue Awaab's Law now regulates"
-              width={1120}
-              height={400}
+              fill
               loading="eager"
-              className="w-auto object-cover h-auto"
+              className="object-cover"
             />
           </div>
         </FadeIn>
