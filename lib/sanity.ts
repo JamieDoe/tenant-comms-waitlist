@@ -6,6 +6,9 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 const isSanityConfigured = projectId && /^[a-z0-9-]+$/.test(projectId);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SanityImageSource = any;
+
 export const sanityClient = isSanityConfigured
   ? createClient({
       projectId,
@@ -23,9 +26,6 @@ export function urlFor(source: SanityImageSource) {
   if (!builder) throw new Error("Sanity not configured");
   return builder.image(source);
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type SanityImageSource = any;
 
 /* ------------------------------------------------------------------ */
 /* Queries                                                             */
@@ -54,6 +54,16 @@ export const POST_QUERY = `*[_type == "post" && slug.current == $slug][0] {
 }`;
 
 export const POST_SLUGS_QUERY = `*[_type == "post" && defined(slug.current)].slug.current`;
+
+export const RECENT_POSTS_QUERY = `*[_type == "post" && slug.current != $slug] | order(publishedAt desc)[0...3] {
+  _id,
+  title,
+  slug,
+  publishedAt,
+  excerpt,
+  mainImage,
+  "categories": categories[]->title
+}`;
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */

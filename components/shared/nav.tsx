@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { MessageSquare, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -24,18 +25,18 @@ export function Nav() {
       aria-label="Main navigation"
     >
       <div className="mx-auto flex max-w-[1120px] items-center justify-between px-6 py-4">
-        <a href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-chart-5">
             <MessageSquare size={18} className="text-chart-1" />
           </div>
           <span className="font-serif text-xl font-bold tracking-tight text-chart-5">
             {SITE_CONFIG.name}
           </span>
-        </a>
+        </Link>
         <Button asChild size="lg" className="hidden bg-chart-5 px-5 py-3 font-semibold text-white hover:bg-chart-5/90 sm:inline-flex">
-          <a href="#signup" className="gap-1.5">
+          <Link href="/#signup" className="gap-1.5">
             Join the Waitlist <ChevronRight size={14} />
-          </a>
+          </Link>
         </Button>
       </div>
     </nav>

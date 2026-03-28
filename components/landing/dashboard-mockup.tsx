@@ -472,8 +472,7 @@ export function DashboardMockup() {
             )}
             {/* Progress bar */}
             {cycling && activeTab === tab.id && (
-              <motion.span
-                layoutId="tab-progress"
+              <span
                 className="absolute bottom-0 left-0 h-[2px] bg-foreground"
                 style={{ width: `${progress * 100}%` }}
               />

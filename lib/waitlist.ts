@@ -20,15 +20,32 @@ export interface WaitlistResult {
  * Submit an email to the waitlist.
  * Adds the contact to the Resend audience and sends a notification email.
  */
+const EMAIL_MAX_LENGTH = 254;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ALLOWED_SOURCES = ["hero", "cta", "nav", "footer"];
+
 export async function submitToWaitlist(
   submission: WaitlistSubmission
 ): Promise<WaitlistResult> {
   try {
+    const email = submission.email.trim().toLowerCase();
+    if (
+      !email ||
+      email.length > EMAIL_MAX_LENGTH ||
+      !EMAIL_REGEX.test(email)
+    ) {
+      return { success: false, message: "Please enter a valid email address." };
+    }
+
+    const source = ALLOWED_SOURCES.includes(submission.source)
+      ? submission.source
+      : "unknown";
+
     // Add contact to Resend audience for tracking
     const audienceId = process.env.RESEND_AUDIENCE_ID;
     if (audienceId) {
       const { error: contactError } = await resend.contacts.create({
-        email: submission.email,
+        email,
         audienceId,
         unsubscribed: false,
       });
@@ -47,10 +64,10 @@ export async function submitToWaitlist(
     const { error } = await resend.emails.send({
       from: "TenantComms <waitlist@tenantcomms.com>",
       to: ["waitlist@tenantcomms.com"],
-      subject: `New waitlist signup: ${submission.email}`,
+      subject: `New waitlist signup: ${email}`,
       react: WaitlistConfirmationEmail({
-        email: submission.email,
-        source: submission.source,
+        email,
+        source,
       }),
     });
 

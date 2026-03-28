@@ -99,6 +99,10 @@ export function EmailForm({
             setError("");
           }}
           placeholder="you@agency.co.uk"
+          maxLength={254}
+          aria-label="Email address"
+          aria-describedby={error ? "email-error" : undefined}
+          aria-invalid={error ? true : undefined}
           className={`h-14 min-w-0 flex-1 px-5 text-base ${
             dark
               ? "border-white/10 bg-white/5 text-white placeholder:text-white/40 backdrop-blur-sm"
@@ -122,7 +126,7 @@ export function EmailForm({
           )}
         </Button>
       </form>
-      {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
+      {error && <p id="email-error" role="alert" className="mt-2 text-xs text-destructive">{error}</p>}
     </div>
   );
 }

@@ -15,38 +15,23 @@ export const metadata = createMetadata({
   title: SEO_DEFAULTS.title,
   description: SEO_DEFAULTS.description,
   path: "",
+  absoluteTitle: true,
 });
 
 function JsonLd() {
   const structuredData = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        name: SITE_CONFIG.name,
-        url: SITE_CONFIG.domain,
-        description: SITE_CONFIG.tagline,
-      },
-      {
-        "@type": "WebPage",
-        name: SEO_DEFAULTS.title,
-        description: SEO_DEFAULTS.description,
-        url: SITE_CONFIG.domain,
-      },
-      {
-        "@type": "SoftwareApplication",
-        name: SITE_CONFIG.name,
-        description: SEO_DEFAULTS.description,
-        applicationCategory: "BusinessApplication",
-        operatingSystem: "Web",
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "GBP",
-          description: "Free early access waitlist",
-        },
-      },
-    ],
+    "@type": "SoftwareApplication",
+    name: SITE_CONFIG.name,
+    description: SEO_DEFAULTS.description,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "GBP",
+      description: "Free early access waitlist",
+    },
   };
 
   return (
