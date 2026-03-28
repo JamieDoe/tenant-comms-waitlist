@@ -26,10 +26,10 @@ import { SIDEBAR_ITEMS } from "@/lib/constants";
 /* ------------------------------------------------------------------ */
 
 const TABS = [
-  { id: "inbox", label: "Unified Inbox" },
-  { id: "maintenance", label: "Maintenance Tracking" },
-  { id: "portal", label: "Tenant Portal" },
-  { id: "audit", label: "Audit Log" },
+  { id: "inbox", label: "Unified Inbox", shortLabel: "Inbox" },
+  { id: "maintenance", label: "Maintenance Tracking", shortLabel: "Maintenance" },
+  { id: "portal", label: "Tenant Portal", shortLabel: "Portal" },
+  { id: "audit", label: "Audit Log", shortLabel: "Audit" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -1074,7 +1074,8 @@ export function DashboardMockup() {
                   style={{ width: `${progress * 100}%` }}
                 />
               )}
-              {tab.label}
+              <span className="sm:hidden">{tab.shortLabel}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
             </button>
           ))}
         </div>
