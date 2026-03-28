@@ -56,15 +56,12 @@ export async function submitToWaitlist(
       }
     }
 
-    // Send notification email
+    // Send confirmation email to user
     const { error } = await resend.emails.send({
-      from: "waitlist@tenantcomms.com",
+      from: "TenantComms <waitlist@tenantcomms.com>",
       to: email,
-      subject: `New waitlist signup: ${email}`,
-      react: WaitlistConfirmationEmail({
-        email,
-        source,
-      }),
+      subject: "You're on the waitlist — TenantComms",
+      react: WaitlistConfirmationEmail({ email, source }),
     });
 
     if (error) {

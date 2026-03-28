@@ -18,7 +18,6 @@ interface WaitlistConfirmationEmailProps {
 
 export default function WaitlistConfirmationEmail({
   email = "agent@example.com",
-  source = "hero",
 }: WaitlistConfirmationEmailProps) {
   return (
     <Html>
@@ -27,7 +26,7 @@ export default function WaitlistConfirmationEmail({
           @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
         `}</style>
       </Head>
-      <Preview>New waitlist signup — {email}</Preview>
+      <Preview>You&apos;re on the TenantComms early access list</Preview>
       <Body style={main}>
         <Container style={container}>
           {/* Header with logo */}
@@ -46,77 +45,109 @@ export default function WaitlistConfirmationEmail({
 
           {/* Main content card */}
           <Section style={contentCard}>
-            <Text style={badge}>New Signup</Text>
+            <Text style={badge}>Early Access</Text>
 
             <Heading style={heading}>
-              Someone joined the waitlist
+              You&apos;re on the list
             </Heading>
 
             <Text style={subtitle}>
-              A new letting agent has signed up for early access to TenantComms.
+              Thanks for signing up for early access to TenantComms. We&apos;re
+              building the all-in-one communication and maintenance platform for
+              UK letting agents.
             </Text>
 
-            {/* Details */}
+            <Hr style={divider} />
+
+            <Heading as="h3" style={subheading}>
+              What happens next?
+            </Heading>
+
+            <table cellPadding="0" cellSpacing="0" width="100%">
+              <tr>
+                <td style={stepRow}>
+                  <table cellPadding="0" cellSpacing="0">
+                    <tr>
+                      <td style={stepNumber}>1</td>
+                      <td style={stepText}>
+                        We&apos;ll keep you updated as we build — you&apos;ll
+                        hear from us before anyone else.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style={stepRow}>
+                  <table cellPadding="0" cellSpacing="0">
+                    <tr>
+                      <td style={stepNumber}>2</td>
+                      <td style={stepText}>
+                        Early access members get priority onboarding and direct
+                        input on the product roadmap.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style={stepRow}>
+                  <table cellPadding="0" cellSpacing="0">
+                    <tr>
+                      <td style={stepNumber}>3</td>
+                      <td style={stepText}>
+                        Your launch pricing is locked in for life — no price
+                        increases, ever.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <Hr style={divider} />
+
+            {/* Account info */}
             <Section style={detailsBox}>
-              <table cellPadding="0" cellSpacing="0" width="100%">
-                <tr>
-                  <td style={detailRow}>
-                    <Text style={detailLabel}>Email address</Text>
-                    <Text style={detailValue}>{email}</Text>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={detailDivider}>
-                    <Hr style={detailHr} />
-                  </td>
-                </tr>
-                <tr>
-                  <td style={detailRow}>
-                    <Text style={detailLabel}>Source</Text>
-                    <Text style={detailValue}>{source}</Text>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={detailDivider}>
-                    <Hr style={detailHr} />
-                  </td>
-                </tr>
-                <tr>
-                  <td style={detailRow}>
-                    <Text style={detailLabel}>Signed up</Text>
-                    <Text style={detailValue}>
-                      {new Date().toLocaleString("en-GB", {
-                        timeZone: "Europe/London",
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </Text>
-                  </td>
-                </tr>
-              </table>
+              <Text style={detailLabel}>Registered email</Text>
+              <Text style={detailValue}>{email}</Text>
             </Section>
 
-            {/* Action button */}
+            {/* CTA */}
             <Section style={buttonSection}>
-              <Link
-                href="https://resend.com/audiences"
-                style={button}
-              >
-                View in Resend →
+              <Link href="https://tenantcomms.com/blog" style={button}>
+                Read our blog →
               </Link>
             </Section>
+
+            <Text style={ctaSubtext}>
+              Catch up on Awaab&apos;s Law compliance guides and letting agent
+              best practices while you wait.
+            </Text>
           </Section>
 
           {/* Footer */}
           <Section style={footerSection}>
             <Text style={footerText}>
-              TenantComms · Automated waitlist notification
+              TenantComms · Unified tenant communication for UK letting agents
             </Text>
-            <Text style={footerSubtext}>
-              Unified tenant communication for UK letting agents
+            <Text style={footerLinks}>
+              <Link href="https://tenantcomms.com" style={footerLink}>
+                Website
+              </Link>
+              {"  ·  "}
+              <Link href="https://tenantcomms.com/blog" style={footerLink}>
+                Blog
+              </Link>
+              {"  ·  "}
+              <Link href="https://tenantcomms.com/privacy" style={footerLink}>
+                Privacy
+              </Link>
+            </Text>
+            <Text style={footerMuted}>
+              You received this email because {email} signed up for the
+              TenantComms waitlist. If this wasn&apos;t you, you can safely
+              ignore this email.
             </Text>
           </Section>
         </Container>
@@ -130,10 +161,10 @@ export default function WaitlistConfirmationEmail({
 /* ------------------------------------------------------------------ */
 
 const colors = {
-  primary: "#1c1c1c",       // chart-5
-  secondary: "#636363",     // chart-3
-  muted: "#8a8a8a",         // chart-2
-  light: "#d4d4d4",         // chart-1
+  primary: "#1c1c1c",
+  secondary: "#636363",
+  muted: "#8a8a8a",
+  light: "#d4d4d4",
   border: "#e8e8e8",
   bg: "#f8f8f8",
   white: "#ffffff",
@@ -163,7 +194,6 @@ const logoIcon = {
   borderRadius: "10px",
   textAlign: "center" as const,
   verticalAlign: "middle" as const,
-  paddingRight: "0",
 };
 
 const logoIconText = {
@@ -206,36 +236,61 @@ const heading = {
   fontSize: "24px",
   fontWeight: "700" as const,
   color: colors.primary,
-  margin: "0 0 8px",
+  margin: "0 0 12px",
   lineHeight: "1.3",
   letterSpacing: "-0.3px",
 };
 
 const subtitle = {
   fontSize: "14px",
+  lineHeight: "1.7",
+  color: colors.secondary,
+  margin: "0 0 4px",
+};
+
+const divider = {
+  borderColor: colors.border,
+  margin: "28px 0",
+};
+
+const subheading = {
+  fontSize: "16px",
+  fontWeight: "600" as const,
+  color: colors.primary,
+  margin: "0 0 16px",
+};
+
+const stepRow = {
+  padding: "0 0 14px",
+};
+
+const stepNumber = {
+  width: "28px",
+  height: "28px",
+  backgroundColor: colors.primary,
+  borderRadius: "50%",
+  textAlign: "center" as const,
+  verticalAlign: "top" as const,
+  color: colors.white,
+  fontSize: "12px",
+  fontWeight: "700" as const,
+  lineHeight: "28px",
+};
+
+const stepText = {
+  fontSize: "14px",
   lineHeight: "1.6",
   color: colors.secondary,
-  margin: "0 0 28px",
+  paddingLeft: "12px",
+  verticalAlign: "top" as const,
+  margin: "0",
 };
 
 const detailsBox = {
   backgroundColor: colors.bg,
   borderRadius: "12px",
-  padding: "20px 24px",
+  padding: "16px 20px",
   border: `1px solid ${colors.border}`,
-};
-
-const detailRow = {
-  padding: "0",
-};
-
-const detailDivider = {
-  padding: "0",
-};
-
-const detailHr = {
-  borderColor: colors.border,
-  margin: "12px 0",
 };
 
 const detailLabel = {
@@ -256,7 +311,7 @@ const detailValue = {
 
 const buttonSection = {
   textAlign: "center" as const,
-  padding: "28px 0 0",
+  padding: "24px 0 0",
 };
 
 const button = {
@@ -271,6 +326,13 @@ const button = {
   letterSpacing: "-0.1px",
 };
 
+const ctaSubtext = {
+  fontSize: "12px",
+  color: colors.muted,
+  textAlign: "center" as const,
+  margin: "12px 0 0",
+};
+
 const footerSection = {
   textAlign: "center" as const,
   padding: "32px 0 0",
@@ -279,11 +341,22 @@ const footerSection = {
 const footerText = {
   fontSize: "12px",
   color: colors.muted,
-  margin: "0 0 4px",
+  margin: "0 0 8px",
 };
 
-const footerSubtext = {
+const footerLinks = {
+  fontSize: "12px",
+  margin: "0 0 16px",
+};
+
+const footerLink = {
+  color: colors.secondary,
+  textDecoration: "underline",
+};
+
+const footerMuted = {
   fontSize: "11px",
   color: colors.light,
   margin: "0",
+  lineHeight: "1.5",
 };
