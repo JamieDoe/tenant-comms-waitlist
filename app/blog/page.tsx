@@ -47,7 +47,7 @@ export default async function BlogPage() {
                   className="group mb-16 grid items-center gap-0 overflow-hidden rounded-2xl border border-border/50 bg-muted/20 transition-all duration-300 hover:border-chart-3/30 hover:shadow-xl hover:shadow-chart-3/[0.08] sm:grid-cols-2"
                 >
                   {featured.mainImage && (
-                    <div className="relative aspect-[4/3] overflow-hidden bg-muted sm:aspect-auto sm:h-full sm:min-h-[420px]">
+                    <div className="relative aspect-[16/9] overflow-hidden bg-muted sm:aspect-auto sm:h-full sm:min-h-[420px]">
                       <Image
                         src={urlFor(featured.mainImage).width(800).height(600).url()}
                         alt={featured.title}

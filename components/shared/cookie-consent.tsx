@@ -41,7 +41,7 @@ export function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6"
+          className="fixed bottom-0 left-0 right-0 z-50 p-4 pb-6 sm:p-6"
         >
           <div className="mx-auto flex max-w-[1120px] flex-col gap-4 rounded-xl border border-border/60 bg-background/95 p-5 shadow-lg backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
@@ -62,16 +62,16 @@ export function CookieConsent() {
             <div className="flex shrink-0 items-center gap-2.5">
               <Button
                 variant="outline"
-                size="sm"
+                size="default"
                 onClick={() => handleConsent("rejected")}
-                className="rounded-lg px-4"
+                className="rounded-lg px-4 min-h-[44px]"
               >
                 Reject
               </Button>
               <Button
-                size="sm"
+                size="default"
                 onClick={() => handleConsent("accepted")}
-                className="rounded-lg bg-chart-5 px-4 font-semibold text-white hover:bg-chart-5/90"
+                className="rounded-lg bg-chart-5 px-4 min-h-[44px] font-semibold text-white hover:bg-chart-5/90"
               >
                 Accept
               </Button>

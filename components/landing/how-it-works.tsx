@@ -38,20 +38,20 @@ export function HowItWorks() {
       <div ref={containerRef} className="relative mx-auto max-w-[720px]">
         {/* Vertical timeline line — measured from first to last icon center */}
         <div
-          className="absolute left-6 hidden w-px -translate-x-1/2 bg-border/80 sm:block"
+          className="absolute left-5 sm:left-6 hidden w-px -translate-x-1/2 bg-border/80 sm:block"
           style={{ top: lineStyle.top, height: lineStyle.height }}
         />
 
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
           {STEPS.map((item, i) => {
             const Icon = item.icon;
             return (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="relative flex gap-6 sm:gap-8">
+                <div className="relative flex gap-4 sm:gap-6 md:gap-8">
                   {/* Step indicator */}
                   <div
                     data-step-icon
-                    className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-chart-5 text-white shadow-lg shadow-chart-5/20"
+                    className="relative z-10 flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-chart-5 text-white shadow-lg shadow-chart-5/20"
                   >
                     <Icon size={22} />
                   </div>

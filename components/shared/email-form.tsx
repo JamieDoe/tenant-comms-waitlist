@@ -113,7 +113,7 @@ export function EmailForm({
         <Button
           type="submit"
           disabled={loading}
-          className="h-14 shrink-0 gap-2 bg-chart-5 px-8 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-chart-5/90 active:translate-y-0"
+          className="h-14 w-full sm:w-auto shrink-0 gap-2 bg-chart-5 px-8 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-chart-5/90 active:translate-y-0"
           size="lg"
         >
           {loading ? (

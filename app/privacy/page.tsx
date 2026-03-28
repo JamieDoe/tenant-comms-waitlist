@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         </p>
         <Separator className="mb-8" />
 
-        <div className="space-y-8 text-[0.93rem] leading-relaxed text-muted-foreground">
+        <div className="space-y-8 overflow-x-hidden text-[0.93rem] leading-relaxed text-muted-foreground">
           <p>
             TenantComms (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or
             &ldquo;our&rdquo;) is committed to protecting your personal data.
