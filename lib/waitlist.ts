@@ -29,11 +29,7 @@ export async function submitToWaitlist(
 ): Promise<WaitlistResult> {
   try {
     const email = submission.email.trim().toLowerCase();
-    if (
-      !email ||
-      email.length > EMAIL_MAX_LENGTH ||
-      !EMAIL_REGEX.test(email)
-    ) {
+    if (!email || email.length > EMAIL_MAX_LENGTH || !EMAIL_REGEX.test(email)) {
       return { success: false, message: "Please enter a valid email address." };
     }
 
@@ -41,20 +37,23 @@ export async function submitToWaitlist(
       ? submission.source
       : "unknown";
 
-    // Create contact in Resend for tracking
-    const { error: contactError } = await resend.contacts.create({
-      email,
-      firstName: "",
-      lastName: "",
-    });
+    // Add contact to Resend audience for tracking
+    const audienceId = process.env.RESEND_AUDIENCE_ID;
+    if (audienceId) {
+      const { error: contactError } = await resend.contacts.create({
+        email,
+        audienceId,
+        unsubscribed: false,
+      });
 
-    // Ignore "already exists" errors, fail on others
-    if (contactError && !contactError.message?.includes("already")) {
-      console.error("[Waitlist] Contact error:", contactError);
-      return {
-        success: false,
-        message: "Something went wrong. Please try again.",
-      };
+      // Ignore "already exists" errors, fail on others
+      if (contactError && !contactError.message?.includes("already")) {
+        console.error("[Waitlist] Contact error:", contactError);
+        return {
+          success: false,
+          message: "Something went wrong. Please try again.",
+        };
+      }
     }
 
     // Send confirmation email to user
