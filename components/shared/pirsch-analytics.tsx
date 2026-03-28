@@ -9,7 +9,7 @@ export function PirschAnalytics() {
     <Script
       defer
       src="https://api.pirsch.io/pa.js"
-      id="pirschjs"
+      id="pianjs"
       data-code={process.env.NEXT_PUBLIC_PIRSCH_CODE}
       strategy="afterInteractive"
     />
