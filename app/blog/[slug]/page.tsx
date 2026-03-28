@@ -77,10 +77,11 @@ function extractHeadings(body: any[]): TocItem[] {
   return body
     .filter((block) => /^h[1-4]$/.test(block.style))
     .map((block) => {
-      const text = block.children
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ?.map((c: any) => c.text)
-        .join("") || "";
+      const text =
+        block.children
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ?.map((c: any) => c.text)
+          .join("") || "";
       const level = parseInt(block.style.replace("h", ""), 10);
       return { id: slugify(text), text, level };
     });
@@ -253,7 +254,13 @@ export default async function BlogPostPage({
               )}
 
               {/* Content */}
-              <div className={headings.length === 0 ? "mx-auto max-w-[720px] lg:col-span-2" : ""}>
+              <div
+                className={
+                  headings.length === 0
+                    ? "mx-auto max-w-[720px] lg:col-span-2"
+                    : ""
+                }
+              >
                 {post.body && (
                   <div className="prose prose-neutral max-w-none overflow-x-hidden prose-headings:font-serif prose-headings:text-foreground prose-a:font-medium prose-a:text-chart-5 prose-a:underline prose-a:decoration-chart-5/30 prose-a:underline-offset-2 hover:prose-a:decoration-chart-5 prose-img:rounded-xl prose-p:leading-relaxed">
                     <PortableText
@@ -301,7 +308,10 @@ export default async function BlogPostPage({
                     {rp.mainImage && (
                       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                         <Image
-                          src={urlFor(rp.mainImage).width(600).height(340).url()}
+                          src={urlFor(rp.mainImage)
+                            .width(600)
+                            .height(340)
+                            .url()}
                           alt={rp.title}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -315,13 +325,18 @@ export default async function BlogPostPage({
                             {rp.categories[0]}
                           </span>
                         )}
-                        <span className="text-muted-foreground/50">&middot;</span>
+                        <span className="text-muted-foreground/50">
+                          &middot;
+                        </span>
                         <time className="text-muted-foreground/60">
-                          {new Date(rp.publishedAt).toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                          {new Date(rp.publishedAt).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )}
                         </time>
                       </div>
                       <h3 className="mb-2 font-serif text-lg font-semibold leading-snug text-chart-5 transition-colors group-hover:text-chart-3">
