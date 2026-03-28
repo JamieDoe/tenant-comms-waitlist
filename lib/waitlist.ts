@@ -21,7 +21,7 @@ export interface WaitlistResult {
  * Adds the contact to the Resend audience and sends a notification email.
  */
 export async function submitToWaitlist(
-  submission: WaitlistSubmission
+  submission: WaitlistSubmission,
 ): Promise<WaitlistResult> {
   try {
     // Add contact to Resend audience for tracking
@@ -45,8 +45,8 @@ export async function submitToWaitlist(
 
     // Send notification email
     const { error } = await resend.emails.send({
-      from: "TenantComms <waitlist@tenantcomms.com>",
-      to: ["waitlist@tenantcomms.com"],
+      from: "waitlist@tenantcomms.com",
+      to: submission.email,
       subject: `New waitlist signup: ${submission.email}`,
       react: WaitlistConfirmationEmail({
         email: submission.email,
