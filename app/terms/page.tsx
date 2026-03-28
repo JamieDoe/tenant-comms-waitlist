@@ -25,7 +25,7 @@ export default function TermsPage() {
         </p>
         <Separator className="mb-8" />
 
-        <div className="space-y-8 text-[0.93rem] leading-relaxed text-muted-foreground">
+        <div className="space-y-8 overflow-x-hidden text-[0.93rem] leading-relaxed text-muted-foreground">
           <p>
             Please read these terms of service (&ldquo;Terms&rdquo;) carefully
             before using tenantcomms.com (the &ldquo;Website&rdquo;) operated by

@@ -23,7 +23,7 @@ export function Hero() {
           <FadeIn>
             <Badge
               variant="outline"
-              className="mb-6 gap-2 border-chart-1/30 bg-chart-1/10 px-4 py-1.5 text-xs font-semibold text-chart-4"
+              className="mb-6 h-auto gap-2 overflow-visible whitespace-normal border-chart-1/30 bg-chart-1/10 px-3 py-1.5 text-center text-[0.65rem] font-semibold text-chart-4 sm:px-4 sm:text-xs"
             >
               <AlertTriangle size={13} />
               {HERO_COPY.badge}

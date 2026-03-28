@@ -184,7 +184,7 @@ export default async function BlogPostPage({
                 </div>
               )}
 
-              <h1 className="mb-5 font-serif text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              <h1 className="mb-5 font-serif text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
                 {post.title}
               </h1>
 
@@ -255,7 +255,7 @@ export default async function BlogPostPage({
               {/* Content */}
               <div className={headings.length === 0 ? "mx-auto max-w-[720px] lg:col-span-2" : ""}>
                 {post.body && (
-                  <div className="prose prose-neutral max-w-none prose-headings:font-serif prose-headings:text-foreground prose-a:font-medium prose-a:text-chart-5 prose-a:underline prose-a:decoration-chart-5/30 prose-a:underline-offset-2 hover:prose-a:decoration-chart-5 prose-img:rounded-xl prose-p:leading-relaxed">
+                  <div className="prose prose-neutral max-w-none overflow-x-hidden prose-headings:font-serif prose-headings:text-foreground prose-a:font-medium prose-a:text-chart-5 prose-a:underline prose-a:decoration-chart-5/30 prose-a:underline-offset-2 hover:prose-a:decoration-chart-5 prose-img:rounded-xl prose-p:leading-relaxed">
                     <PortableText
                       value={post.body}
                       components={portableTextComponents}
