@@ -47,9 +47,7 @@ export default function WaitlistConfirmationEmail({
           <Section style={contentCard}>
             <Text style={badge}>Early Access</Text>
 
-            <Heading style={heading}>
-              You&apos;re on the list
-            </Heading>
+            <Heading style={heading}>You&apos;re on the list</Heading>
 
             <Text style={subtitle}>
               Thanks for signing up for early access to TenantComms. We&apos;re
@@ -68,7 +66,9 @@ export default function WaitlistConfirmationEmail({
                 <td style={stepRow}>
                   <table cellPadding="0" cellSpacing="0">
                     <tr>
-                      <td style={stepNumber}>1</td>
+                      <td width="28" style={stepNumberCell}>
+                        <div style={stepCircle}>1</div>
+                      </td>
                       <td style={stepText}>
                         We&apos;ll keep you updated as we build — you&apos;ll
                         hear from us before anyone else.
@@ -81,7 +81,9 @@ export default function WaitlistConfirmationEmail({
                 <td style={stepRow}>
                   <table cellPadding="0" cellSpacing="0">
                     <tr>
-                      <td style={stepNumber}>2</td>
+                      <td width="28" style={stepNumberCell}>
+                        <div style={stepCircle}>2</div>
+                      </td>
                       <td style={stepText}>
                         Early access members get priority onboarding and direct
                         input on the product roadmap.
@@ -94,7 +96,9 @@ export default function WaitlistConfirmationEmail({
                 <td style={stepRow}>
                   <table cellPadding="0" cellSpacing="0">
                     <tr>
-                      <td style={stepNumber}>3</td>
+                      <td width="28" style={stepNumberCell}>
+                        <div style={stepCircle}>3</div>
+                      </td>
                       <td style={stepText}>
                         Your launch pricing is locked in for life — no price
                         increases, ever.
@@ -264,17 +268,24 @@ const stepRow = {
   padding: "0 0 14px",
 };
 
-const stepNumber = {
+const stepNumberCell = {
+  width: "28px",
+  verticalAlign: "top" as const,
+  padding: "0",
+};
+
+const stepCircle = {
   width: "28px",
   height: "28px",
   backgroundColor: colors.primary,
   borderRadius: "50%",
   textAlign: "center" as const,
-  verticalAlign: "top" as const,
   color: colors.white,
   fontSize: "12px",
   fontWeight: "700" as const,
   lineHeight: "28px",
+  MozBorderRadius: "50%",
+  WebkitBorderRadius: "50%",
 };
 
 const stepText = {
