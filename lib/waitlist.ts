@@ -20,6 +20,10 @@ export interface WaitlistResult {
  * Submit an email to the waitlist.
  * Adds the contact to the Resend audience and sends a notification email.
  */
+const EMAIL_MAX_LENGTH = 254;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ALLOWED_SOURCES = ["hero", "cta", "nav", "footer"];
+
 export async function submitToWaitlist(
   submission: WaitlistSubmission,
 ): Promise<WaitlistResult> {
@@ -45,8 +49,8 @@ export async function submitToWaitlist(
       to: submission.email,
       subject: `New waitlist signup: ${submission.email}`,
       react: WaitlistConfirmationEmail({
-        email: submission.email,
-        source: submission.source,
+        email,
+        source,
       }),
     });
 

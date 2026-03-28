@@ -46,10 +46,14 @@ export function EmailForm({
 
         // Fire Pirsch custom event
         if (typeof window !== "undefined" && "pirsch" in window) {
-          (window as unknown as { pirsch: (event: string, options: { meta: Record<string, string> }) => void }).pirsch(
-            "Waitlist Signup",
-            { meta: { source } }
-          );
+          (
+            window as unknown as {
+              pirsch: (
+                event: string,
+                options: { meta: Record<string, string> },
+              ) => void;
+            }
+          ).pirsch("Waitlist Signup", { meta: { source } });
         }
       } else {
         toast.error(result.message);
@@ -95,9 +99,13 @@ export function EmailForm({
             setError("");
           }}
           placeholder="you@agency.co.uk"
+          maxLength={254}
+          aria-label="Email address"
+          aria-describedby={error ? "email-error" : undefined}
+          aria-invalid={error ? true : undefined}
           className={`h-14 min-w-0 flex-1 px-5 text-base ${
             dark
-              ? "border-white/10 bg-white/5 text-white placeholder:text-white/40"
+              ? "border-white/10 bg-white/5 text-white placeholder:text-white/40 backdrop-blur-sm"
               : ""
           }`}
           disabled={loading}
@@ -118,7 +126,7 @@ export function EmailForm({
           )}
         </Button>
       </form>
-      {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
+      {error && <p id="email-error" role="alert" className="mt-2 text-xs text-destructive">{error}</p>}
     </div>
   );
 }

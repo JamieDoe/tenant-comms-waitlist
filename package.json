@@ -9,7 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@portabletext/react": "^6.0.3",
     "@react-email/components": "^1.0.10",
+    "@sanity/image-url": "^2.1.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
@@ -17,6 +20,7 @@
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "next": "16.2.1",
+    "next-sanity": "^12.2.1",
     "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
