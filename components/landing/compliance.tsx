@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/shared/fade-in";
@@ -9,6 +10,19 @@ export function Compliance() {
   return (
     <section className="bg-accent/30 px-6 py-20 sm:py-28" aria-label="Compliance">
       <div className="mx-auto max-w-[1120px]">
+        {/* Mould cleanup image */}
+        <FadeIn>
+          <div className="mb-12 overflow-hidden rounded-2xl">
+            <Image
+              src="/assets/mould-cleanup.webp"
+              alt="Professional mould remediation in a rental property — the kind of issue Awaab's Law now regulates"
+              width={1120}
+              height={400}
+              className="h-[280px] w-full object-cover sm:h-[340px]"
+            />
+          </div>
+        </FadeIn>
+
         <div className="grid items-center gap-12 sm:grid-cols-2">
           <FadeIn>
             <div>

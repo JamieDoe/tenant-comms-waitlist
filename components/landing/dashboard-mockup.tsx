@@ -31,7 +31,7 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-const TAB_CYCLE_MS = 5000;
+const TAB_CYCLE_MS = 7500;
 
 /* ------------------------------------------------------------------ */
 /* Inbox messages                                                      */
@@ -450,21 +450,31 @@ export function DashboardMockup() {
   return (
     <div className="relative mx-auto w-full max-w-[880px]" style={{ perspective: "1200px" }}>
       {/* Tabs */}
-      <div className="mb-5 grid grid-cols-4 gap-0 rounded-xl border border-border/60 bg-muted/30 p-1">
+      <div className="relative mb-5 grid grid-cols-4 gap-0">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
-            className={`relative overflow-hidden rounded-lg py-2 text-[0.72rem] font-medium transition-all duration-300 ${
+            className={`relative z-10 overflow-hidden rounded-lg py-2 text-[0.72rem] font-medium transition-colors duration-200 ${
               activeTab === tab.id
-                ? "bg-background text-foreground shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
-                : "text-muted-foreground/70 hover:text-muted-foreground"
+                ? "text-foreground"
+                : "text-secondary-foreground hover:text-foreground"
             }`}
           >
+            {/* Sliding background indicator */}
+            {activeTab === tab.id && (
+              <motion.div
+                layoutId="active-tab-bg"
+                className="absolute inset-0 rounded-lg bg-muted"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                style={{ zIndex: -1 }}
+              />
+            )}
             {/* Progress bar */}
             {cycling && activeTab === tab.id && (
-              <span
-                className="absolute bottom-0 left-0 h-[2px] bg-chart-1/60 transition-none"
+              <motion.span
+                layoutId="tab-progress"
+                className="absolute bottom-0 left-0 h-[2px] bg-foreground"
                 style={{ width: `${progress * 100}%` }}
               />
             )}
@@ -494,7 +504,18 @@ export function DashboardMockup() {
             <div className="h-2.5 w-2.5 rounded-full bg-amber-400/50" />
             <div className="h-2.5 w-2.5 rounded-full bg-green-400/50" />
             <div className="mx-auto rounded-md bg-muted px-8 py-1">
-              <span className="text-[0.55rem] text-muted-foreground">app.tenantcomms.com</span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={activeTab === "portal" ? "tenant" : "app"}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="block text-[0.55rem] text-muted-foreground"
+                >
+                  {activeTab === "portal" ? "tenant.tenantcomms.com" : "app.tenantcomms.com"}
+                </motion.span>
+              </AnimatePresence>
             </div>
           </div>
 

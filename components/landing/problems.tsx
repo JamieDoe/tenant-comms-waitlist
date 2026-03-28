@@ -1,13 +1,27 @@
 "use client";
 
+import Image from "next/image";
 import { FadeIn } from "@/components/shared/fade-in";
 import { SectionHeader } from "@/components/shared/section-header";
 import { PROBLEMS } from "@/lib/constants";
 
 export function Problems() {
   return (
-    <section className="bg-chart-5 px-6 py-20 sm:py-28" aria-label="Common problems">
-      <div className="mx-auto max-w-[1120px]">
+    <section
+      className="relative overflow-hidden bg-chart-5 px-6 py-20 sm:py-28"
+      aria-label="Common problems"
+    >
+      {/* Background image — messy office = comms chaos */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.07]">
+        <Image
+          src="/assets/messy-office.webp"
+          alt=""
+          fill
+          className="object-cover"
+          aria-hidden="true"
+        />
+      </div>
+      <div className="relative mx-auto max-w-[1120px]">
         <SectionHeader
           label="Sound familiar?"
           heading="You're managing properties. Your communications are managing you."
@@ -20,7 +34,7 @@ export function Problems() {
             return (
               <FadeIn key={i} delay={i * 0.1}>
                 <div
-                  className="h-full rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6"
+                  className="h-full rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm"
                   style={{
                     backgroundImage:
                       i === 0
