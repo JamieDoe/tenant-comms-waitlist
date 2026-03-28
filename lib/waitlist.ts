@@ -18,12 +18,32 @@ export interface WaitlistResult {
 
 /**
  * Submit an email to the waitlist.
- * Sends a confirmation notification to waitlist@tenantcomms.com via Resend.
+ * Adds the contact to the Resend audience and sends a notification email.
  */
 export async function submitToWaitlist(
   submission: WaitlistSubmission
 ): Promise<WaitlistResult> {
   try {
+    // Add contact to Resend audience for tracking
+    const audienceId = process.env.RESEND_AUDIENCE_ID;
+    if (audienceId) {
+      const { error: contactError } = await resend.contacts.create({
+        email: submission.email,
+        audienceId,
+        unsubscribed: false,
+      });
+
+      // Ignore "already exists" errors, fail on others
+      if (contactError && !contactError.message?.includes("already")) {
+        console.error("[Waitlist] Contact error:", contactError);
+        return {
+          success: false,
+          message: "Something went wrong. Please try again.",
+        };
+      }
+    }
+
+    // Send notification email
     const { error } = await resend.emails.send({
       from: "TenantComms <waitlist@tenantcomms.com>",
       to: ["waitlist@tenantcomms.com"],
