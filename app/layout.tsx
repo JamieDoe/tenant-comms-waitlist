@@ -9,6 +9,7 @@ import { CookieConsent } from "@/components/shared/cookie-consent";
 import { PirschAnalytics } from "@/components/shared/pirsch-analytics";
 import { SITE_CONFIG, SEO_DEFAULTS } from "@/lib/constants";
 import { organizationJsonLd, webSiteJsonLd } from "@/lib/metadata";
+import Script from "next/script";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -78,10 +79,15 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(graphJsonLd) }}
         />
+        <Script
+          src="https://cdn.pirsch.io/pirsch.js"
+          data-code={process.env.NEXT_PUBLIC_PIRSCH_CODE}
+          strategy="afterInteractive"
+        />
         {children}
         <Toaster richColors position="top-center" />
         <CookieConsent />
-        <PirschAnalytics />
+
         <SpeedInsights />
         <Analytics />
       </body>
