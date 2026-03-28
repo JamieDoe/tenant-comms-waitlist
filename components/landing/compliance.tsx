@@ -4,11 +4,18 @@ import Image from "next/image";
 import { Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/shared/fade-in";
-import { COMPLIANCE_COPY, COMPLIANCE_ITEMS, COMPLIANCE_FOOTER } from "@/lib/constants";
+import {
+  COMPLIANCE_COPY,
+  COMPLIANCE_ITEMS,
+  COMPLIANCE_FOOTER,
+} from "@/lib/constants";
 
 export function Compliance() {
   return (
-    <section className="bg-accent/30 px-6 py-20 sm:py-28" aria-label="Compliance">
+    <section
+      className="bg-accent/30 px-6 py-20 sm:py-28"
+      aria-label="Compliance"
+    >
       <div className="mx-auto max-w-[1120px]">
         {/* Mould cleanup image */}
         <FadeIn>
@@ -18,7 +25,8 @@ export function Compliance() {
               alt="Professional mould remediation in a rental property — the kind of issue Awaab's Law now regulates"
               width={1120}
               height={400}
-              className="h-[280px] w-full object-cover sm:h-[340px]"
+              loading="eager"
+              className="w-auto object-cover h-auto"
             />
           </div>
         </FadeIn>
@@ -41,21 +49,28 @@ export function Compliance() {
               </h2>
               <div className="space-y-4 text-[0.93rem] leading-relaxed text-muted-foreground">
                 {COMPLIANCE_COPY.paragraphs.map((p, i) => (
-                  <p key={i} dangerouslySetInnerHTML={{ __html: i === 2
-                    ? p.replace(
-                        "\u00a340,000 for repeat breaches",
-                        '<strong class="text-foreground">\u00a340,000 for repeat breaches</strong>'
-                      ).replace(
-                        "will",
-                        '<strong class="text-foreground">will</strong>'
-                      )
-                    : i === 1
-                      ? p.replace(
-                          "will extend",
-                          '<strong class="text-foreground">will</strong> extend'
-                        )
-                      : p
-                  }} />
+                  <p
+                    key={i}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        i === 2
+                          ? p
+                              .replace(
+                                "\u00a340,000 for repeat breaches",
+                                '<strong class="text-foreground">\u00a340,000 for repeat breaches</strong>',
+                              )
+                              .replace(
+                                "will",
+                                '<strong class="text-foreground">will</strong>',
+                              )
+                          : i === 1
+                            ? p.replace(
+                                "will extend",
+                                '<strong class="text-foreground">will</strong> extend',
+                              )
+                            : p,
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -69,7 +84,10 @@ export function Compliance() {
               {COMPLIANCE_ITEMS.map((row, i) => {
                 const Icon = row.icon;
                 return (
-                  <div key={i} className="mb-4 flex items-start gap-3 last:mb-0">
+                  <div
+                    key={i}
+                    className="mb-4 flex items-start gap-3 last:mb-0"
+                  >
                     <div className="mt-0.5 shrink-0 text-chart-1">
                       <Icon size={18} />
                     </div>
