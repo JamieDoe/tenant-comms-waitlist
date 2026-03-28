@@ -28,8 +28,22 @@ export async function submitToWaitlist(
   submission: WaitlistSubmission,
 ): Promise<WaitlistResult> {
   try {
+    const email = submission.email.trim().toLowerCase();
+    if (
+      !email ||
+      email.length > EMAIL_MAX_LENGTH ||
+      !EMAIL_REGEX.test(email)
+    ) {
+      return { success: false, message: "Please enter a valid email address." };
+    }
+
+    const source = ALLOWED_SOURCES.includes(submission.source)
+      ? submission.source
+      : "unknown";
+
+    // Create contact in Resend for tracking
     const { error: contactError } = await resend.contacts.create({
-      email: submission.email,
+      email,
       firstName: "",
       lastName: "",
     });
@@ -43,15 +57,12 @@ export async function submitToWaitlist(
       };
     }
 
-    // Send notification email
+    // Send confirmation email to user
     const { error } = await resend.emails.send({
-      from: "waitlist@tenantcomms.com",
-      to: submission.email,
-      subject: `New waitlist signup: ${submission.email}`,
-      react: WaitlistConfirmationEmail({
-        email,
-        source,
-      }),
+      from: "TenantComms <waitlist@tenantcomms.com>",
+      to: email,
+      subject: "You're on the waitlist — TenantComms",
+      react: WaitlistConfirmationEmail({ email, source }),
     });
 
     if (error) {
