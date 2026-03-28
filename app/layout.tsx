@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import { Poppins, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -68,7 +70,7 @@ export default function RootLayout({
         poppins.variable,
         poppinsHeading.variable,
         firaCode.variable,
-        "font-sans"
+        "font-sans",
       )}
     >
       <body className="min-h-full flex flex-col">
@@ -80,6 +82,8 @@ export default function RootLayout({
         <Toaster richColors position="top-center" />
         <CookieConsent />
         <PirschAnalytics />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

@@ -25,46 +25,29 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ALLOWED_SOURCES = ["hero", "cta", "nav", "footer"];
 
 export async function submitToWaitlist(
-  submission: WaitlistSubmission
+  submission: WaitlistSubmission,
 ): Promise<WaitlistResult> {
   try {
-    const email = submission.email.trim().toLowerCase();
-    if (
-      !email ||
-      email.length > EMAIL_MAX_LENGTH ||
-      !EMAIL_REGEX.test(email)
-    ) {
-      return { success: false, message: "Please enter a valid email address." };
-    }
+    const { error: contactError } = await resend.contacts.create({
+      email: submission.email,
+      firstName: "",
+      lastName: "",
+    });
 
-    const source = ALLOWED_SOURCES.includes(submission.source)
-      ? submission.source
-      : "unknown";
-
-    // Add contact to Resend audience for tracking
-    const audienceId = process.env.RESEND_AUDIENCE_ID;
-    if (audienceId) {
-      const { error: contactError } = await resend.contacts.create({
-        email,
-        audienceId,
-        unsubscribed: false,
-      });
-
-      // Ignore "already exists" errors, fail on others
-      if (contactError && !contactError.message?.includes("already")) {
-        console.error("[Waitlist] Contact error:", contactError);
-        return {
-          success: false,
-          message: "Something went wrong. Please try again.",
-        };
-      }
+    // Ignore "already exists" errors, fail on others
+    if (contactError && !contactError.message?.includes("already")) {
+      console.error("[Waitlist] Contact error:", contactError);
+      return {
+        success: false,
+        message: "Something went wrong. Please try again.",
+      };
     }
 
     // Send notification email
     const { error } = await resend.emails.send({
-      from: "TenantComms <waitlist@tenantcomms.com>",
-      to: ["waitlist@tenantcomms.com"],
-      subject: `New waitlist signup: ${email}`,
+      from: "waitlist@tenantcomms.com",
+      to: submission.email,
+      subject: `New waitlist signup: ${submission.email}`,
       react: WaitlistConfirmationEmail({
         email,
         source,
