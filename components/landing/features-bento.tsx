@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Inbox,
   Sparkles,
@@ -78,6 +78,11 @@ const BENTO_MSGS = [
 
 function UnifiedInboxVisual() {
   const [offset, setOffset] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const channelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const inboxRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [paths, setPaths] = useState<{ d: string; cy: number }[]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,6 +90,47 @@ function UnifiedInboxVisual() {
     }, 1500);
     return () => clearInterval(interval);
   }, []);
+
+  // Measure positions and compute SVG paths
+  const measure = useCallback(() => {
+    const container = containerRef.current;
+    const svg = svgRef.current;
+    const inbox = inboxRef.current;
+    if (!container || !svg || !inbox) return;
+
+    const svgRect = svg.getBoundingClientRect();
+    const inboxRect = inbox.getBoundingClientRect();
+    const targetY = inboxRect.top + inboxRect.height / 2 - svgRect.top;
+    const svgH = svgRect.height;
+    const svgW = svgRect.width;
+    if (svgH === 0 || svgW === 0) return;
+
+    const newPaths = channelRefs.current.map((el) => {
+      if (!el) return { d: `M 0 ${svgH / 2} L ${svgW} ${svgH / 2}`, cy: svgH / 2 };
+      const r = el.getBoundingClientRect();
+      const startY = r.top + r.height / 2 - svgRect.top;
+      const cpX = svgW * 0.4;
+      const d =
+        Math.abs(startY - targetY) < 2
+          ? `M 0 ${startY} L ${svgW} ${targetY}`
+          : `M 0 ${startY} C ${cpX} ${startY}, ${svgW * 0.6} ${targetY}, ${svgW} ${targetY}`;
+      return { d, cy: startY };
+    });
+
+    setPaths(newPaths);
+  }, []);
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
+
+  // Re-measure after a short delay to catch layout shifts
+  useEffect(() => {
+    const t = setTimeout(measure, 100);
+    return () => clearTimeout(t);
+  }, [measure]);
 
   const MAX_VISIBLE = 4;
   const visibleCount = Math.min(offset + 1, MAX_VISIBLE);
@@ -95,95 +141,80 @@ function UnifiedInboxVisual() {
   });
 
   const channels = [
-    { icon: Mail, label: "Email", color: "bg-chart-1", textColor: "text-chart-1" },
-    { icon: MessageSquare, label: "WhatsApp", color: "bg-chart-5", textColor: "text-chart-5" },
-    { icon: Globe, label: "Portal", color: "bg-chart-2", textColor: "text-chart-2" },
+    { icon: Mail, label: "Email", color: "bg-chart-1", textColor: "text-chart-1", stroke: "oklch(0.646 0.222 41.116)" },
+    { icon: MessageSquare, label: "WhatsApp", color: "bg-chart-5", textColor: "text-chart-5", stroke: "oklch(0.398 0.07 227.334)" },
+    { icon: Globe, label: "Portal", color: "bg-chart-2", textColor: "text-chart-2", stroke: "oklch(0.577 0.174 136.073)" },
   ];
 
   return (
-    <div className="relative flex h-full items-center justify-center px-4 py-8">
+    <div ref={containerRef} className="relative flex h-full items-center justify-center px-3 sm:px-4 py-8">
       <div className="flex w-full max-w-[380px] items-center gap-0">
         {/* Source channels (left side) */}
-        <div className="relative z-10 flex shrink-0 flex-col gap-3">
+        <div className="relative z-10 flex shrink-0 flex-col gap-2 sm:gap-3">
           {channels.map((ch, i) => {
             const Icon = ch.icon;
             return (
               <motion.div
                 key={ch.label}
+                ref={(el) => { channelRefs.current[i] = el; }}
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 + i * 0.12, type: "spring" as const, stiffness: 200, damping: 20 }}
-                className="flex items-center gap-2 rounded-xl bg-white px-3 py-2 shadow-md shadow-black/[0.04] ring-1 ring-black/[0.04]"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-xl bg-white px-2 py-1.5 sm:px-3 sm:py-2 shadow-md shadow-black/[0.04] ring-1 ring-black/[0.04]"
               >
-                <div className={`flex h-6 w-6 items-center justify-center rounded-md ${ch.color}/10`}>
+                <div className={`flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-md ${ch.color}/10`}>
                   <Icon size={12} className={ch.textColor} />
                 </div>
-                <span className="text-[0.65rem] font-semibold text-foreground">{ch.label}</span>
+                <span className="text-[0.55rem] sm:text-[0.65rem] font-semibold text-foreground">{ch.label}</span>
               </motion.div>
             );
           })}
         </div>
 
-        {/* Animated flow lines (middle) */}
-        <div className="relative mx-1 flex-1">
-          <svg viewBox="0 0 120 100" className="h-[100px] w-full" fill="none">
-            <motion.path
-              d="M 0 15 C 40 15, 60 50, 120 50"
-              stroke="oklch(0.646 0.222 41.116)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeDasharray="4 4"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.4 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-            />
-            <motion.path
-              d="M 0 50 L 120 50"
-              stroke="oklch(0.398 0.07 227.334)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeDasharray="4 4"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.4 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-            />
-            <motion.path
-              d="M 0 85 C 40 85, 60 50, 120 50"
-              stroke="oklch(0.577 0.174 136.073)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeDasharray="4 4"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.4 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
-            />
-            <motion.circle
-              r="3" fill="oklch(0.646 0.222 41.116)"
-              animate={{ offsetDistance: ["0%", "100%"], opacity: [0, 1, 1, 0] }}
-              transition={{ repeat: Infinity, duration: 2, type: "tween", ease: "easeInOut", delay: 0 }}
-              style={{ offsetPath: "path('M 0 15 C 40 15, 60 50, 120 50')" }}
-            />
-            <motion.circle
-              r="3" fill="oklch(0.398 0.07 227.334)"
-              animate={{ offsetDistance: ["0%", "100%"], opacity: [0, 1, 1, 0] }}
-              transition={{ repeat: Infinity, duration: 2, type: "tween", ease: "easeInOut", delay: 0.7 }}
-              style={{ offsetPath: "path('M 0 50 L 120 50')" }}
-            />
-            <motion.circle
-              r="3" fill="oklch(0.577 0.174 136.073)"
-              animate={{ offsetDistance: ["0%", "100%"], opacity: [0, 1, 1, 0] }}
-              transition={{ repeat: Infinity, duration: 2, type: "tween", ease: "easeInOut", delay: 1.4 }}
-              style={{ offsetPath: "path('M 0 85 C 40 85, 60 50, 120 50')" }}
-            />
+        {/* Animated flow lines (middle) — dynamically positioned */}
+        <div className="relative mx-0.5 sm:mx-1 flex-1">
+          <svg ref={svgRef} className="h-full w-full overflow-visible" style={{ minHeight: "80px" }} fill="none">
+            {paths.map((p, i) => (
+              <g key={`${i}-${p.d}`}>
+                <motion.path
+                  d={p.d}
+                  stroke={channels[i].stroke}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeDasharray="4 4"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 0.4 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + i * 0.1, duration: 0.8, ease: "easeOut" }}
+                />
+                <circle r="3" fill={channels[i].stroke} opacity="0.9">
+                  <animateMotion
+                    dur="2s"
+                    repeatCount="indefinite"
+                    begin={`${i * 0.7}s`}
+                    path={p.d}
+                    keyTimes="0;0.1;0.9;1"
+                    keyPoints="0;0;1;1"
+                    calcMode="spline"
+                    keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0 0 1 1"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0;1;1;0"
+                    keyTimes="0;0.1;0.8;1"
+                    dur="2s"
+                    repeatCount="indefinite"
+                    begin={`${i * 0.7}s`}
+                  />
+                </circle>
+              </g>
+            ))}
           </svg>
         </div>
 
         {/* Unified Inbox (right side) */}
-        <div className="relative z-10 shrink-0 w-[150px] rounded-xl bg-white p-2.5 shadow-lg shadow-black/[0.06] ring-1 ring-black/[0.04]">
+        <div ref={inboxRef} className="relative z-10 w-[140px] shrink-0 sm:w-[175px] rounded-xl bg-white p-2 sm:p-2.5 shadow-lg shadow-black/[0.06] ring-1 ring-black/[0.04]">
           <div className="mb-1.5 flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <Inbox size={12} className="text-chart-5" />
@@ -403,8 +434,8 @@ function AiDraftVisual() {
 /* ------------------------------------------------------------------ */
 
 const MAINT_STAGES = ["Reported", "Acknowledged", "In Progress", "Resolved"] as const;
-const MAINT_COLORS = ["bg-destructive text-destructive", "bg-chart-5 text-chart-5", "bg-chart-2 text-chart-2", "bg-chart-1 text-chart-1"];
-const MAINT_BAR_COLORS = ["bg-destructive", "bg-chart-5", "bg-chart-2", "bg-chart-1"];
+const MAINT_COLORS = ["bg-destructive text-destructive", "bg-amber-500 text-amber-600", "bg-blue-500 text-blue-600", "bg-emerald-500 text-emerald-600"];
+const MAINT_BAR_COLORS = ["bg-destructive", "bg-amber-500", "bg-blue-500", "bg-emerald-500"];
 
 const MAINT_ROWS = [
   { title: "Boiler repair", property: "14 Maple Dr", initials: "SC" },
